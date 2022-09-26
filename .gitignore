@@ -1,0 +1,5 @@
+philo
+a.out
+*.o
+.DS_Store
+.vscode
