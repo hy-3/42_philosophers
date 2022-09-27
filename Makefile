@@ -12,7 +12,7 @@ $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(FLAG_WARN) $(FLAG_PTHREAD) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(FLAG_WARN) $(FLAG_PTHREAD) -c $< -o $@ 
+	$(CC) $(FLAG_WARN) -c $< -o $@ 
 
 clean:
 	rm -f $(OBJ)
