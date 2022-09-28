@@ -6,6 +6,8 @@ void	*each_philo(void *arg)
 	struct timeval	t;
 
 	philo = arg;
+	if (philo->id % 2 == 0)
+		usleep(5000);
 	while (1)
 	{
 		gettimeofday(&t, NULL);
