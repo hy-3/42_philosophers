@@ -40,7 +40,7 @@ void	*each_philo(void *arg)
 		usleep(5000);
 	while (1)
 	{
-		pthread_create(&deadcheck_tid, NULL, is_philo_dead, philo);
+		pthread_create(&deadcheck_tid, NULL, is_philo_dead, philo); //TODO: check from last meal
 		gettimeofday(&t, NULL);
 		printf("%ld: %i is thinking\n", (t.tv_sec * 1000) + (t.tv_usec / 1000), philo->id);
 
