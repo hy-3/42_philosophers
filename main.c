@@ -53,16 +53,18 @@ void	initialize_and_run_philos(t_set *set, t_philo **philo)
 void	join_lastphilo_and_free(t_set *set, t_philo **philo)
 {
 	int	i;
-	int	philo_of_num;
+	int	num;
 
 	i = 0;
-	philo_of_num = set->num_of_philo;
-	pthread_join(*(philo[philo_of_num]->tid), NULL);
+	num = set->num_of_philo;
+	pthread_join(*(philo[num]->tid), NULL);
 	pthread_mutex_destroy(set->lock_is_dead);
 	free(set->lock_is_dead);
-	while (i++ < philo_of_num)
+	while (i++ < num)
 	{
 		free(set->fork[i]);
+		if (i != num)
+			pthread_detach(*(philo[i]->tid));
 		free(philo[i]->tid);
 		free(philo[i]->start_t);
 		free(philo[i]);

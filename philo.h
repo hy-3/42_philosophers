@@ -53,7 +53,7 @@ void	*philo_deadcheacker(void *arg);
 
 // util.c
 void	aftertreat_mutex(t_philo *philo);
-void	*aftertreat_thread(t_philo *philo, pthread_t *deadcheck_tid);
+void	*aftertreat_thread(pthread_t *deadcheck_tid);
 int		cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms);
 long	get_time_ms(struct timeval *t);
 int		ft_atoi(const char *str);

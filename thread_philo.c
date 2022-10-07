@@ -64,15 +64,15 @@ void	*each_philo(void *arg)
 		usleep(3000);
 	pthread_create(&deadcheck_tid, NULL, philo_deadcheacker, philo);
 	if (philo->set->is_dead == 1)
-		return (aftertreat_thread(philo, &deadcheck_tid));
+		return (aftertreat_thread(&deadcheck_tid));
 	while (1)
 	{
 		if (philo_take_forks(philo) == 1)
-			return (aftertreat_thread(philo, &deadcheck_tid));
+			return (aftertreat_thread(&deadcheck_tid));
 		if (philo_eat(philo) == 1)
-			return (aftertreat_thread(philo, &deadcheck_tid));
+			return (aftertreat_thread(&deadcheck_tid));
 		if (philo_sleep(philo) == 1)
-			return (aftertreat_thread(philo, &deadcheck_tid));
+			return (aftertreat_thread(&deadcheck_tid));
 		philo_think(philo);
 	}
 	return (NULL);

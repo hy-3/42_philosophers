@@ -9,11 +9,9 @@ void	aftertreat_mutex(t_philo *philo)
 	pthread_mutex_destroy(philo->set->fork[philo->id]);
 }
 
-void	*aftertreat_thread(t_philo *philo, pthread_t *deadcheck_tid)
+void	*aftertreat_thread(pthread_t *deadcheck_tid)
 {
 	pthread_detach(*deadcheck_tid);
-	if (philo->id != philo->set->num_of_philo)
-		pthread_detach(*(philo->tid));
 	return (NULL);
 }
 
