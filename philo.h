@@ -23,11 +23,13 @@
 
 typedef struct s_set
 {
+	int				num_of_philo;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	pthread_mutex_t	*lock_is_dead;
 	int				is_dead;
+	pthread_mutex_t	*fork[100]; //TODO: check
 }	t_set;
 
 typedef struct s_philo
@@ -43,6 +45,16 @@ typedef struct s_philo
 	int				reset_start_t;
 }	t_philo;
 
-int	ft_atoi(const char *str);
+// thread_philo.c
+void	*each_philo(void *arg);
+
+// thread_deadchecker.c
+void	*philo_deadcheacker(void *arg);
+
+// util.c
+void	aftertreat_dead(t_philo *philo);
+int		cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms);
+long	get_time_ms(struct timeval *t);
+int		ft_atoi(const char *str);
 
 #endif
