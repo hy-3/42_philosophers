@@ -13,7 +13,7 @@ void	handle_dead(t_philo *philo, struct timeval *current_t)
 		printf("%ld %i died\n", get_time_ms(current_t), philo->id);
 	philo->set->is_dead = 1;
 	pthread_mutex_unlock(philo->set->lock_is_dead);
-	aftertreat_dead(philo);
+	aftertreat_mutex(philo);
 }
 
 void	*philo_deadcheacker(void *arg)
@@ -29,7 +29,7 @@ void	*philo_deadcheacker(void *arg)
 		gettimeofday(&current_t, NULL);
 		if (philo->set->is_dead == 1)
 		{
-			aftertreat_dead(philo);
+			aftertreat_mutex(philo);
 			return (NULL);
 		}
 		if (get_time_ms(&current_t) - get_time_ms(philo->start_t) \

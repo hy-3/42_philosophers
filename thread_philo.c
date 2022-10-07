@@ -63,17 +63,16 @@ void	*each_philo(void *arg)
 	if (philo->id % 2 == 0)
 		usleep(3000);
 	pthread_create(&deadcheck_tid, NULL, philo_deadcheacker, philo);
+	if (philo->set->is_dead == 1)
+		return (aftertreat_thread(philo, &deadcheck_tid));
 	while (1)
 	{
 		if (philo_take_forks(philo) == 1)
-		{
-			pthread_detach(deadcheck_tid);
-			return (NULL);
-		}
+			return (aftertreat_thread(philo, &deadcheck_tid));
 		if (philo_eat(philo) == 1)
-			return (NULL);
+			return (aftertreat_thread(philo, &deadcheck_tid));
 		if (philo_sleep(philo) == 1)
-			return (NULL);
+			return (aftertreat_thread(philo, &deadcheck_tid));
 		philo_think(philo);
 	}
 	return (NULL);

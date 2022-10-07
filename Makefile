@@ -1,6 +1,6 @@
 NAME = philo
 CC = gcc
-FLAG_WARN = -Wall -Wextra -Werror -fsanitize=address -g3
+FLAG_WARN = -Wall -Wextra -Werror #-fsanitize=address -g3
 FLAG_PTHREAD = -lpthread
 SRC = main.c \
       thread_philo.c \
