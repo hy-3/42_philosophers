@@ -5,7 +5,8 @@ FLAG_PTHREAD = -lpthread
 SRC = main.c \
       thread_philo.c \
       thread_deadchecker.c \
-      util.c
+      util.c \
+      util2.c
 OBJ = $(SRC:%.c=%.o)
 
 all: $(NAME)

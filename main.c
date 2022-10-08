@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hiyamamo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hiyamamo <hiyamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:42:06 by hiyamamo          #+#    #+#             */
-/*   Updated: 2022/10/08 14:42:08 by hiyamamo         ###   ########.fr       */
+/*   Updated: 2022/10/08 15:39:30 by hiyamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,8 @@ int	main(int argc, char *argv[])
 	t_set	set;
 	t_philo	*philo[500];
 
-	if (argc != 5 || argv[1][0] == '0')
-	{
-		printf("arg error\n");
+	if (check_arg(argc, argv) == 1)
 		return (1);
-	}
 	initialize_set(&set, argv);
 	initialize_fork(&set);
 	initialize_and_run_philos(&set, philo);
