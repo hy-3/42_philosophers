@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   thread_deadchecker.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hiyamamo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hiyamamo <hiyamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:42:38 by hiyamamo          #+#    #+#             */
-/*   Updated: 2022/10/08 14:42:41 by hiyamamo         ###   ########.fr       */
+/*   Updated: 2022/10/10 20:51:22 by hiyamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	reset_philo_start_t(t_philo *philo)
-{
-	gettimeofday(philo->start_t, NULL);
-	philo->reset_start_t = 0;
-}
 
 void	handle_dead(t_philo *philo, struct timeval *current_t)
 {
@@ -36,8 +30,6 @@ void	*philo_deadcheacker(void *arg)
 	philo = arg;
 	while (1)
 	{
-		if (philo->reset_start_t == 1)
-			reset_philo_start_t(philo);
 		gettimeofday(&current_t, NULL);
 		if (philo->set->is_dead == 1)
 		{

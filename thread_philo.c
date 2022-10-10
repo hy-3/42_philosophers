@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thread_philo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hiyamamo <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hiyamamo <hiyamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:42:27 by hiyamamo          #+#    #+#             */
-/*   Updated: 2022/10/08 14:42:29 by hiyamamo         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:07:27 by hiyamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,19 @@ int	philo_take_forks(t_philo *philo)
 	if (philo->set->is_dead == 1)
 		return (1);
 	gettimeofday(&t, NULL);
-	printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
+	pthread_mutex_lock(philo->set->lock_is_dead);
+	if (philo->set->is_dead != 1)
+		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
+	pthread_mutex_unlock(philo->set->lock_is_dead);
 	philo->l_fork_locked = 1;
 	pthread_mutex_lock(philo->l_fork);
 	if (philo->set->is_dead == 1)
 		return (1);
 	gettimeofday(&t, NULL);
-	printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
+	pthread_mutex_lock(philo->set->lock_is_dead);
+	if (philo->set->is_dead != 1)
+		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
+	pthread_mutex_unlock(philo->set->lock_is_dead);
 	return (0);
 }
 
@@ -36,8 +42,11 @@ int	philo_eat(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	printf("%ld %i is eating\n", get_time_ms(&t), philo->id);
-	philo->reset_start_t = 1;
+	pthread_mutex_lock(philo->set->lock_is_dead);
+	if (philo->set->is_dead != 1)
+		printf("%ld %i is eating\n", get_time_ms(&t), philo->id);
+	pthread_mutex_unlock(philo->set->lock_is_dead);
+	gettimeofday(philo->start_t, NULL);
 	if (cust_usleep(philo, &t, philo->set->time_to_eat) == 1)
 		return (1);
 	pthread_mutex_unlock(philo->r_fork);
@@ -52,7 +61,10 @@ int	philo_sleep(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	printf("%ld %i is sleeping\n", get_time_ms(&t), philo->id);
+	pthread_mutex_lock(philo->set->lock_is_dead);
+	if (philo->set->is_dead != 1)
+		printf("%ld %i is sleeping\n", get_time_ms(&t), philo->id);
+	pthread_mutex_unlock(philo->set->lock_is_dead);
 	if (cust_usleep(philo, &t, philo->set->time_to_sleep) == 1)
 		return (1);
 	return (0);
@@ -63,7 +75,8 @@ void	philo_think(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	printf("%ld %i is thinking\n", get_time_ms(&t), philo->id);
+	if (philo->set->is_dead != 1)
+		printf("%ld %i is thinking\n", get_time_ms(&t), philo->id);
 }
 
 void	*each_philo(void *arg)
