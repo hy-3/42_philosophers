@@ -18,9 +18,8 @@ int	philo_take_forks(t_philo *philo)
 
 	pthread_mutex_lock(philo->r_fork);
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) == 0)
-		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
-	else
+	if (check_is_dead_and_printf(philo, "has taken a fork", \
+		get_time_ms(&t)) == 1)
 		return (1);
 	pthread_mutex_lock(philo->l_fork);
 	gettimeofday(&t, NULL);
@@ -36,9 +35,7 @@ int	philo_eat(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) == 0)
-		printf("%ld %i is eating\n", get_time_ms(&t), philo->id);
-	else
+	if (check_is_dead_and_printf(philo, "is eating", get_time_ms(&t)) == 1)
 		return (1);
 	gettimeofday(philo->start_t, NULL);
 	if (cust_usleep(philo, &t, philo->set->time_to_eat) == 1)
@@ -53,9 +50,7 @@ int	philo_sleep(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) == 0)
-		printf("%ld %i is sleeping\n", get_time_ms(&t), philo->id);
-	else
+	if (check_is_dead_and_printf(philo, "is sleeping", get_time_ms(&t)) == 1)
 		return (1);
 	if (cust_usleep(philo, &t, philo->set->time_to_sleep) == 1)
 		return (1);
@@ -67,8 +62,7 @@ void	philo_think(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) == 0)
-		printf("%ld %i is thinking\n", get_time_ms(&t), philo->id);
+	check_is_dead_and_printf(philo, "is thinking", get_time_ms(&t));
 }
 
 void	*each_philo(void *arg)

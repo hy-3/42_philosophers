@@ -18,6 +18,20 @@ void	aftertreat_mutex(t_philo *philo)
 	pthread_mutex_unlock(philo->l_fork);
 }
 
+int	check_is_dead_and_printf(t_philo *philo, char *str, long ms)
+{
+	int	res;
+
+	res = 0;
+	pthread_mutex_lock(philo->set->lock_is_dead);
+	if (philo->set->is_dead == 0)
+		printf("%ld %i %s\n", ms, philo->id, str);
+	else
+		res = 1;
+	pthread_mutex_unlock(philo->set->lock_is_dead);
+	return (res);
+}
+
 int	check_is_dead(t_philo *philo)
 {
 	int	res;

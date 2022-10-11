@@ -53,6 +53,7 @@ void	aftertreat_mutex(t_philo *philo);
 int		cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms);
 long	get_time_ms(struct timeval *t);
 int		check_is_dead(t_philo *philo);
+int		check_is_dead_and_printf(t_philo *philo, char *str, long ms);
 
 // util2.c
 int		check_arg(int argc, char **argv);
