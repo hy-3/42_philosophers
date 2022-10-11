@@ -16,24 +16,18 @@ int	philo_take_forks(t_philo *philo)
 {
 	struct timeval	t;
 
-	philo->r_fork_locked = 1;
 	pthread_mutex_lock(philo->r_fork);
-	if (philo->set->is_dead == 1)
-		return (1);
 	gettimeofday(&t, NULL);
-	pthread_mutex_lock(philo->set->lock_is_dead);
-	if (philo->set->is_dead != 1)
+	if (check_is_dead(philo) != 1)
 		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
-	pthread_mutex_unlock(philo->set->lock_is_dead);
-	philo->l_fork_locked = 1;
+	else
+		return (1);
 	pthread_mutex_lock(philo->l_fork);
-	if (philo->set->is_dead == 1)
-		return (1);
 	gettimeofday(&t, NULL);
-	pthread_mutex_lock(philo->set->lock_is_dead);
-	if (philo->set->is_dead != 1)
+	if (check_is_dead(philo) != 1)
 		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
-	pthread_mutex_unlock(philo->set->lock_is_dead);
+	else
+		return (1);
 	return (0);
 }
 
@@ -42,17 +36,15 @@ int	philo_eat(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	pthread_mutex_lock(philo->set->lock_is_dead);
-	if (philo->set->is_dead != 1)
+	if (check_is_dead(philo) != 1)
 		printf("%ld %i is eating\n", get_time_ms(&t), philo->id);
-	pthread_mutex_unlock(philo->set->lock_is_dead);
+	else
+		return (1);
 	gettimeofday(philo->start_t, NULL);
 	if (cust_usleep(philo, &t, philo->set->time_to_eat) == 1)
 		return (1);
 	pthread_mutex_unlock(philo->r_fork);
-	philo->r_fork_locked = 0;
 	pthread_mutex_unlock(philo->l_fork);
-	philo->l_fork_locked = 0;
 	return (0);
 }
 
@@ -61,10 +53,10 @@ int	philo_sleep(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	pthread_mutex_lock(philo->set->lock_is_dead);
-	if (philo->set->is_dead != 1)
+	if (check_is_dead(philo) != 1)
 		printf("%ld %i is sleeping\n", get_time_ms(&t), philo->id);
-	pthread_mutex_unlock(philo->set->lock_is_dead);
+	else
+		return (1);
 	if (cust_usleep(philo, &t, philo->set->time_to_sleep) == 1)
 		return (1);
 	return (0);
@@ -75,7 +67,7 @@ void	philo_think(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (philo->set->is_dead != 1)
+	if (check_is_dead(philo) != 1)
 		printf("%ld %i is thinking\n", get_time_ms(&t), philo->id);
 }
 
@@ -88,7 +80,7 @@ void	*each_philo(void *arg)
 	if (philo->id % 2 == 0)
 		usleep(3000);
 	pthread_create(&deadcheck_tid, NULL, philo_deadcheacker, philo);
-	if (philo->set->is_dead == 1)
+	if (check_is_dead(philo) == 1)
 		return (aftertreat_thread(&deadcheck_tid));
 	while (1)
 	{

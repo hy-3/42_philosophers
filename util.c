@@ -14,17 +14,26 @@
 
 void	aftertreat_mutex(t_philo *philo)
 {
-	if (philo->r_fork_locked == 1)
-		pthread_mutex_unlock(philo->r_fork);
-	if (philo->l_fork_locked == 1)
-		pthread_mutex_unlock(philo->l_fork);
-	pthread_mutex_destroy(philo->set->fork[philo->id]);
+	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_unlock(philo->l_fork);
 }
 
 void	*aftertreat_thread(pthread_t *deadcheck_tid)
 {
 	pthread_detach(*deadcheck_tid);
 	return (NULL);
+}
+
+int	check_is_dead(t_philo *philo)
+{
+	int	res;
+
+	res = 0;
+	pthread_mutex_lock(philo->set->lock_is_dead);
+	if (philo->set->is_dead == 1)
+		res = 1;
+	pthread_mutex_unlock(philo->set->lock_is_dead);
+	return (res);
 }
 
 int	cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms)
@@ -35,12 +44,14 @@ int	cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms)
 	while (get_time_ms(&current_t) - get_time_ms(t_start_act) < limit_ms)
 	{
 		if (get_time_ms(&current_t) - get_time_ms(philo->start_t) \
-			> philo->set->time_to_die || philo->set->is_dead == 1)
+			> philo->set->time_to_die || check_is_dead(philo) == 1)
 		{
 			pthread_mutex_lock(philo->set->lock_is_dead);
 			if (philo->set->is_dead != 1)
+			{
 				printf("%ld %i died\n", get_time_ms(&current_t), philo->id);
-			philo->set->is_dead = 1;
+				philo->set->is_dead = 1;
+			}
 			pthread_mutex_unlock(philo->set->lock_is_dead);
 			aftertreat_mutex(philo);
 			return (1);

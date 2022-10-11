@@ -39,10 +39,7 @@ typedef struct s_philo
 	t_set			*set;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
-	int				r_fork_locked;
-	int				l_fork_locked;
 	struct timeval	*start_t;
-	int				reset_start_t;
 }	t_philo;
 
 // thread_philo.c
@@ -56,6 +53,7 @@ void	aftertreat_mutex(t_philo *philo);
 void	*aftertreat_thread(pthread_t *deadcheck_tid);
 int		cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms);
 long	get_time_ms(struct timeval *t);
+int	check_is_dead(t_philo *philo);
 
 // util2.c
 int		check_arg(int argc, char **argv);

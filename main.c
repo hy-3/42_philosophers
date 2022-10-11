@@ -51,13 +51,10 @@ void	initialize_and_run_philos(t_set *set, t_philo **philo)
 		philo[i]->id = i;
 		philo[i]->r_fork = set->fork[i];
 		philo[i]->l_fork = set->fork[i % set->num_of_philo + 1];
-		philo[i]->r_fork_locked = 0;
-		philo[i]->l_fork_locked = 0;
 		philo[i]->tid = (pthread_t *) malloc (sizeof (pthread_t));
 		start_t = (struct timeval *) malloc (sizeof (struct timeval));
 		gettimeofday(start_t, NULL);
 		philo[i]->start_t = start_t;
-		philo[i]->reset_start_t = 0;
 		pthread_create(philo[i]->tid, NULL, each_philo, philo[i]);
 	}
 }
@@ -74,6 +71,7 @@ void	join_lastphilo_and_free(t_set *set, t_philo **philo)
 	free(set->lock_is_dead);
 	while (i++ < num)
 	{
+		pthread_mutex_destroy(philo[i]->set->fork[i]);
 		free(set->fork[i]);
 		if (i != num)
 			pthread_detach(*(philo[i]->tid));
