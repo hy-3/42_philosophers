@@ -18,12 +18,6 @@ void	aftertreat_mutex(t_philo *philo)
 	pthread_mutex_unlock(philo->l_fork);
 }
 
-void	*aftertreat_thread(pthread_t *deadcheck_tid)
-{
-	pthread_detach(*deadcheck_tid);
-	return (NULL);
-}
-
 int	check_is_dead(t_philo *philo)
 {
 	int	res;

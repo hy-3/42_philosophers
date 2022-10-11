@@ -3,8 +3,8 @@ CC = gcc
 FLAG_WARN = -Wall -Wextra -Werror -fsanitize=thread -g3 #-fsanitize=address 
 FLAG_PTHREAD = -lpthread
 SRC = main.c \
+      deadchecker.c \
       thread_philo.c \
-      thread_deadchecker.c \
       util.c \
       util2.c
 OBJ = $(SRC:%.c=%.o)

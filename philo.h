@@ -42,18 +42,17 @@ typedef struct s_philo
 	struct timeval	*start_t;
 }	t_philo;
 
+// deadchecker.c
+void	philos_deadchecker(t_set *set, t_philo **philo);
+
 // thread_philo.c
 void	*each_philo(void *arg);
 
-// thread_deadchecker.c
-void	*philo_deadcheacker(void *arg);
-
 // util.c
 void	aftertreat_mutex(t_philo *philo);
-void	*aftertreat_thread(pthread_t *deadcheck_tid);
 int		cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms);
 long	get_time_ms(struct timeval *t);
-int	check_is_dead(t_philo *philo);
+int		check_is_dead(t_philo *philo);
 
 // util2.c
 int		check_arg(int argc, char **argv);

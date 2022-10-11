@@ -14,15 +14,12 @@
 
 void	initialize_set(t_set *set, char **argv)
 {
-	pthread_mutex_t	*lock_is_dead;
-
 	set->num_of_philo = ft_atoi(argv[1]);
 	set->time_to_die = ft_atoi(argv[2]);
 	set->time_to_eat = ft_atoi(argv[3]);
 	set->time_to_sleep = ft_atoi(argv[4]);
-	lock_is_dead = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
-	pthread_mutex_init(lock_is_dead, NULL);
-	set->lock_is_dead = lock_is_dead;
+	set->lock_is_dead = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
+	pthread_mutex_init(set->lock_is_dead, NULL);
 	set->is_dead = 0;
 }
 
@@ -66,19 +63,17 @@ void	join_lastphilo_and_free(t_set *set, t_philo **philo)
 
 	i = 0;
 	num = set->num_of_philo;
-	pthread_join(*(philo[num]->tid), NULL);
-	pthread_mutex_destroy(set->lock_is_dead);
-	free(set->lock_is_dead);
 	while (i++ < num)
 	{
+		pthread_join(*(philo[i]->tid), NULL);
 		pthread_mutex_destroy(philo[i]->set->fork[i]);
 		free(set->fork[i]);
-		if (i != num)
-			pthread_detach(*(philo[i]->tid));
 		free(philo[i]->tid);
 		free(philo[i]->start_t);
 		free(philo[i]);
 	}
+	pthread_mutex_destroy(set->lock_is_dead);
+	free(set->lock_is_dead);
 }
 
 int	main(int argc, char *argv[])
@@ -91,6 +86,7 @@ int	main(int argc, char *argv[])
 	initialize_set(&set, argv);
 	initialize_fork(&set);
 	initialize_and_run_philos(&set, philo);
+	philos_deadchecker(&set, philo);
 	join_lastphilo_and_free(&set, philo);
 	return (0);
 }

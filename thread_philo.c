@@ -18,13 +18,13 @@ int	philo_take_forks(t_philo *philo)
 
 	pthread_mutex_lock(philo->r_fork);
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) != 1)
+	if (check_is_dead(philo) == 0)
 		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
 	else
 		return (1);
 	pthread_mutex_lock(philo->l_fork);
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) != 1)
+	if (check_is_dead(philo) == 0)
 		printf("%ld %i has taken a fork\n", get_time_ms(&t), philo->id);
 	else
 		return (1);
@@ -36,7 +36,7 @@ int	philo_eat(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) != 1)
+	if (check_is_dead(philo) == 0)
 		printf("%ld %i is eating\n", get_time_ms(&t), philo->id);
 	else
 		return (1);
@@ -53,7 +53,7 @@ int	philo_sleep(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) != 1)
+	if (check_is_dead(philo) == 0)
 		printf("%ld %i is sleeping\n", get_time_ms(&t), philo->id);
 	else
 		return (1);
@@ -67,29 +67,27 @@ void	philo_think(t_philo *philo)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	if (check_is_dead(philo) != 1)
+	if (check_is_dead(philo) == 0)
 		printf("%ld %i is thinking\n", get_time_ms(&t), philo->id);
 }
 
 void	*each_philo(void *arg)
 {
 	t_philo		*philo;
-	pthread_t	deadcheck_tid;
 
 	philo = arg;
 	if (philo->id % 2 == 0)
 		usleep(3000);
-	pthread_create(&deadcheck_tid, NULL, philo_deadcheacker, philo);
 	if (check_is_dead(philo) == 1)
-		return (aftertreat_thread(&deadcheck_tid));
+		return (NULL);
 	while (1)
 	{
 		if (philo_take_forks(philo) == 1)
-			return (aftertreat_thread(&deadcheck_tid));
+			return (NULL);
 		if (philo_eat(philo) == 1)
-			return (aftertreat_thread(&deadcheck_tid));
+			return (NULL);
 		if (philo_sleep(philo) == 1)
-			return (aftertreat_thread(&deadcheck_tid));
+			return (NULL);
 		philo_think(philo);
 	}
 	return (NULL);

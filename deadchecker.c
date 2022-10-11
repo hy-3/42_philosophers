@@ -24,26 +24,25 @@ void	handle_dead(t_philo *philo, struct timeval *current_t)
 	aftertreat_mutex(philo);
 }
 
-void	*philo_deadcheacker(void *arg)
+void	philos_deadchecker(t_set *set, t_philo **philo)
 {
 	struct timeval	current_t;
-	t_philo			*philo;
+	int				i;
 
-	philo = arg;
 	while (1)
 	{
 		gettimeofday(&current_t, NULL);
-		if (check_is_dead(philo) == 1)
+		i = 0;
+		while (i++ < set->num_of_philo)
 		{
-			aftertreat_mutex(philo);
-			return (NULL);
+			if (check_is_dead(philo[i]) == 1)
+				aftertreat_mutex(philo[i]);
+			if (get_time_ms(&current_t) - get_time_ms(philo[i]->start_t) \
+				> philo[i]->set->time_to_die)
+				handle_dead(philo[i], &current_t);
 		}
-		if (get_time_ms(&current_t) - get_time_ms(philo->start_t) \
-			> philo->set->time_to_die)
-		{
-			handle_dead(philo, &current_t);
-			return (NULL);
-		}
+		if (check_is_dead(philo[1]) == 1)
+			return ;
 		usleep(3000);
 	}
 }
