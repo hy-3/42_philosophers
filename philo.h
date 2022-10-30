@@ -21,6 +21,9 @@
 # include <sys/time.h>
 # include <errno.h>
 
+# define USLEEP_TIME 3000
+# define MAX_PHILO_NUM 300
+
 typedef struct s_set
 {
 	int				num_of_philo;
@@ -29,7 +32,7 @@ typedef struct s_set
 	int				time_to_sleep;
 	pthread_mutex_t	*lock_is_dead;
 	int				is_dead;
-	pthread_mutex_t	*fork[500];
+	pthread_mutex_t	*fork[MAX_PHILO_NUM];
 }	t_set;
 
 typedef struct s_philo

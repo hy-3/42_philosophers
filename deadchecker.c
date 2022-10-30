@@ -43,6 +43,6 @@ void	philos_deadchecker(t_set *set, t_philo **philo)
 		}
 		if (check_is_dead(philo[1]) == 1)
 			return ;
-		usleep(3000);
+		usleep(USLEEP_TIME);
 	}
 }

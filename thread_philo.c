@@ -71,7 +71,7 @@ void	*each_philo(void *arg)
 
 	philo = arg;
 	if (philo->id % 2 == 0)
-		usleep(3000);
+		usleep(USLEEP_TIME);
 	if (check_is_dead(philo) == 1)
 		return (NULL);
 	while (1)

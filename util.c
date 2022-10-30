@@ -64,7 +64,7 @@ int	cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms)
 			aftertreat_mutex(philo);
 			return (1);
 		}
-		usleep(3000);
+		usleep(USLEEP_TIME);
 		gettimeofday(&current_t, NULL);
 	}
 	return (0);

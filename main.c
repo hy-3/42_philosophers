@@ -79,7 +79,7 @@ void	join_lastphilo_and_free(t_set *set, t_philo **philo)
 int	main(int argc, char *argv[])
 {
 	t_set	set;
-	t_philo	*philo[500];
+	t_philo	*philo[MAX_PHILO_NUM];
 
 	if (check_arg(argc, argv) == 1)
 		return (1);
