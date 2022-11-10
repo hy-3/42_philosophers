@@ -1,6 +1,6 @@
 NAME = philo
 CC = gcc
-FLAG_WARN = -Wall -Wextra -Werror -fsanitize=thread -g3 #-fsanitize=address 
+FLAG_WARN = -Wall -Wextra -Werror #-fsanitize=thread -g3 #-fsanitize=address
 FLAG_PTHREAD = -lpthread
 SRC = main.c \
       deadchecker.c \
