@@ -6,7 +6,7 @@
 /*   By: hiyamamo <hiyamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:42:44 by hiyamamo          #+#    #+#             */
-/*   Updated: 2022/11/10 16:46:49 by hiyamamo         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:48:20 by hiyamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms)
 				philo->set->is_dead = 1;
 			}
 			pthread_mutex_unlock(philo->set->lock_is_dead);
-			// aftertreat_mutex(philo);
+			aftertreat_mutex(philo);
 			return (1);
 		}
 		if (limit_ms < 3)
