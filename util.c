@@ -6,7 +6,7 @@
 /*   By: hiyamamo <hiyamamo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:42:44 by hiyamamo          #+#    #+#             */
-/*   Updated: 2022/10/10 21:01:51 by hiyamamo         ###   ########.fr       */
+/*   Updated: 2022/11/10 16:46:49 by hiyamamo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,13 @@ int	cust_usleep(t_philo *philo, struct timeval *t_start_act, int limit_ms)
 				philo->set->is_dead = 1;
 			}
 			pthread_mutex_unlock(philo->set->lock_is_dead);
-			aftertreat_mutex(philo);
+			// aftertreat_mutex(philo);
 			return (1);
 		}
-		usleep(USLEEP_TIME);
+		if (limit_ms < 3)
+			usleep(limit_ms * 1000);
+		else
+			usleep(USLEEP_TIME);
 		gettimeofday(&current_t, NULL);
 	}
 	return (0);
