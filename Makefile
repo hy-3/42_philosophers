@@ -3,7 +3,7 @@ CC = gcc
 FLAG_WARN = -Wall -Wextra -Werror #-fsanitize=thread -g3 #-fsanitize=address
 FLAG_PTHREAD = -lpthread
 SRC = main.c \
-      deadchecker.c \
+      philo_checker.c \
       thread_philo.c \
       util.c \
       util2.c

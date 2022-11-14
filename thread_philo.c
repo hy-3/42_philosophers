@@ -37,6 +37,7 @@ int	philo_eat(t_philo *philo)
 	gettimeofday(&t, NULL);
 	if (check_is_dead_and_printf(philo, "is eating", get_time_ms(&t)) == 1)
 		return (1);
+	philo->num_eat++;
 	gettimeofday(philo->start_t, NULL);
 	if (cust_usleep(philo, &t, philo->set->time_to_eat) == 1)
 		return (1);

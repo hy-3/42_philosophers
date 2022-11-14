@@ -22,7 +22,7 @@
 # include <errno.h>
 
 # define USLEEP_TIME 3000
-# define MAX_PHILO_NUM 300
+# define MAX_PHILO_NUM 200
 
 typedef struct s_set
 {
@@ -30,6 +30,7 @@ typedef struct s_set
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int				max_eat;
 	pthread_mutex_t	*lock_is_dead;
 	int				is_dead;
 	pthread_mutex_t	*fork[MAX_PHILO_NUM];
@@ -39,14 +40,15 @@ typedef struct s_philo
 {
 	pthread_t		*tid;
 	int				id;
+	int				num_eat;
 	t_set			*set;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*l_fork;
 	struct timeval	*start_t;
 }	t_philo;
 
-// deadchecker.c
-void	philos_deadchecker(t_set *set, t_philo **philo);
+// philo_checker.c
+void	checker(t_set *set, t_philo **philo);
 
 // thread_philo.c
 void	*each_philo(void *arg);

@@ -12,12 +12,16 @@
 
 #include "philo.h"
 
-void	initialize_set(t_set *set, char **argv)
+void	initialize_set(t_set *set, char **argv, int argc)
 {
 	set->num_of_philo = ft_atoi(argv[1]);
 	set->time_to_die = ft_atoi(argv[2]);
 	set->time_to_eat = ft_atoi(argv[3]);
 	set->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		set->max_eat = ft_atoi(argv[5]);
+	else
+		set->max_eat = -1;
 	set->lock_is_dead = (pthread_mutex_t *) malloc (sizeof (pthread_mutex_t));
 	pthread_mutex_init(set->lock_is_dead, NULL);
 	set->is_dead = 0;
@@ -46,6 +50,7 @@ void	initialize_and_run_philos(t_set *set, t_philo **philo)
 		philo[i] = (t_philo *) malloc (sizeof(t_philo));
 		philo[i]->set = set;
 		philo[i]->id = i;
+		philo[i]->num_eat = 0;
 		philo[i]->r_fork = set->fork[i];
 		philo[i]->l_fork = set->fork[i % set->num_of_philo + 1];
 		philo[i]->tid = (pthread_t *) malloc (sizeof (pthread_t));
@@ -83,10 +88,10 @@ int	main(int argc, char *argv[])
 
 	if (check_arg(argc, argv) == 1)
 		return (1);
-	initialize_set(&set, argv);
+	initialize_set(&set, argv, argc);
 	initialize_fork(&set);
 	initialize_and_run_philos(&set, philo);
-	philos_deadchecker(&set, philo);
+	checker(&set, philo);
 	join_lastphilo_and_free(&set, philo);
 	return (0);
 }

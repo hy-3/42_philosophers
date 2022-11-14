@@ -17,13 +17,13 @@ int	check_arg(int argc, char **argv)
 	int	i;
 	int	k;
 
-	if (argc != 5 || argv[1][0] == '0')
+	if (argc > 6 || argv[1][0] == '0')
 	{
 		printf("Error with arguments\n");
 		return (1);
 	}
 	i = 1;
-	while (i < 5)
+	while (i < argc)
 	{
 		k = 0;
 		while (argv[i][k] != '\0')
